@@ -3,6 +3,7 @@ package com.br.rickandmortyapi.sevice;
 
 import com.br.rickandmortyapi.client.dto.CharacterClientResponse;
 import com.br.rickandmortyapi.client.dto.EpisodeClientResponse;
+import com.br.rickandmortyapi.models.dto.CharacterResponse;
 import com.br.rickandmortyapi.models.entities.Episode;
 import com.br.rickandmortyapi.models.mapper.CharacterMapper;
 import com.br.rickandmortyapi.models.mapper.EpisodeMapper;
@@ -12,13 +13,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.br.rickandmortyapi.models.entities.Character;
 
+
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class CharacterService {
 
     private final RickAndMortyIntegrationService rickAndMortyIntegrationService;
-
-    private final CharacterService characterService;
 
     private final CharacterRepository characterRepository;
 
@@ -29,7 +31,7 @@ public class CharacterService {
     private final EpisodeMapper episodeMapper;
 
 
-    public CharacterClientResponse importCharacterById (Long id){
+    public CharacterResponse importCharacterById (Long id){
 
         characterRepository.findByExternalId(id).ifPresent( character -> {
             throw new RuntimeException("Character already registered");
@@ -48,9 +50,21 @@ public class CharacterService {
             EpisodeClientResponse episodeClientResponse = rickAndMortyIntegrationService.findEpisodeById(episodeId);
 
             Episode episode = episodeMapper.toEpisode(episodeClientResponse);
+
+            Optional<Episode> optionalEpisode = episodeRepository.findByExternalId(episode.getExternalId());
+
+            if (optionalEpisode.isPresent()) {
+                episode = optionalEpisode.get();
+            } else {
+                episode = episodeRepository.save(episode);
+            }
+
+            character.getEpisodes().add(episode);
         }
 
-        return characterClientResponse;
+        Character savedCharacter = characterRepository.save(character);
+
+        return characterMapper.toCharacterResponse(savedCharacter);
     }
 
 }

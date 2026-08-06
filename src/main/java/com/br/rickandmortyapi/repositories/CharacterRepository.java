@@ -1,6 +1,7 @@
 package com.br.rickandmortyapi.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import com.br.rickandmortyapi.models.entities.Character;
 
 import java.util.Optional;
 
