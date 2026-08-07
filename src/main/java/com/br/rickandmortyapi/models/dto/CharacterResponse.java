@@ -1,5 +1,7 @@
 package com.br.rickandmortyapi.models.dto;
 
+import java.util.List;
+
 public record CharacterResponse(
         Long id,
         Long externalId,
@@ -7,6 +9,7 @@ public record CharacterResponse(
         String status,
         String species,
         String origin,
-        Boolean active
+        Boolean active,
+        List<EpisodeResponse>episodes
 ) {
 }

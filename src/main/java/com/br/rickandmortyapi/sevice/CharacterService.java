@@ -82,6 +82,13 @@ public class CharacterService {
             throw new RuntimeException("Character already registered");
         });
     }
+    public CharacterResponse findByName(String name) {
+
+        Character character = findCharacterByName(name);
+
+        return characterMapper.toCharacterResponse(character);
+    }
+
 
     private void addEpisodes(Character character, CharacterClientResponse characterClientResponse) {
 
@@ -120,6 +127,13 @@ public class CharacterService {
     private Character findCharacterById (Long id){
 
         return characterRepository.findById(id).orElseThrow(() -> new RuntimeException("Character not found"));
+    }
+
+    private Character findCharacterByName(String name) {
+
+        return characterRepository
+                .findByNameIgnoreCaseAndActiveTrue(name)
+                .orElseThrow(() -> new RuntimeException("Character not found"));
     }
 
 }

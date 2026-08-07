@@ -51,5 +51,14 @@ public class CharacterController {
         return ResponseEntity.ok().body(characterResponse);
     }
 
+    @GetMapping("/name/{name}")
+    public  ResponseEntity<CharacterResponse> findByuName (@PathVariable String name){
+
+        CharacterResponse characterResponse = characterService.findByName(name);
+
+        return ResponseEntity.ok().body(characterResponse);
+
+    }
+
 
 }

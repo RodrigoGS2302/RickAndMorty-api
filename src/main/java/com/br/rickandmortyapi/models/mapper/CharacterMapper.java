@@ -3,11 +3,18 @@ package com.br.rickandmortyapi.models.mapper;
 import com.br.rickandmortyapi.client.dto.CharacterClientResponse;
 import com.br.rickandmortyapi.models.dto.CharacterResponse;
 import com.br.rickandmortyapi.models.dto.CharacterUpdateRequest;
+import com.br.rickandmortyapi.models.dto.EpisodeResponse;
 import com.br.rickandmortyapi.models.entities.Character;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
+@RequiredArgsConstructor
 public class CharacterMapper {
+
+    private final EpisodeMapper episodeMapper;
 
     public Character toCharacter(CharacterClientResponse characterClientResponse) {
 
@@ -25,6 +32,11 @@ public class CharacterMapper {
 
     public CharacterResponse toCharacterResponse(Character character) {
 
+        List<EpisodeResponse> episodes = character.getEpisodes()
+                .stream()
+                .map(episodeMapper::toEpisodeResponse)
+                .toList();
+
         return new CharacterResponse(
                 character.getId(),
                 character.getExternalId(),
@@ -32,7 +44,9 @@ public class CharacterMapper {
                 character.getStatus(),
                 character.getSpecies(),
                 character.getOrigin(),
-                character.getActive()
+                character.getActive(),
+                episodes
+
         );
     }
 
