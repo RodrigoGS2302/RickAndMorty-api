@@ -1,4 +1,8 @@
 package com.br.rickandmortyapi.exceptions;
 
-public class RickAndMortyIntegrationException {
+public class RickAndMortyIntegrationException extends RuntimeException {
+
+    public RickAndMortyIntegrationException(String message) {
+        super(message);
+    }
 }

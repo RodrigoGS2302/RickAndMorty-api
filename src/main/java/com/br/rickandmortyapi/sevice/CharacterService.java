@@ -60,14 +60,15 @@ public class CharacterService {
 
     }
 
-    public void deleteCharacter(Long id){
+    public CharacterResponse deleteCharacter(Long id) {
 
         Character character = findCharacterById(id);
 
         character.setActive(false);
 
-        characterRepository.save(character);
+        Character savedCharacter = characterRepository.save(character);
 
+        return characterMapper.toCharacterResponse(savedCharacter);
     }
 
     public CharacterResponse findById (Long id){

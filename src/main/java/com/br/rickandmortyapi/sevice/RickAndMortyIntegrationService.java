@@ -3,6 +3,7 @@ package com.br.rickandmortyapi.sevice;
 import com.br.rickandmortyapi.client.RickAndMortyClient;
 import com.br.rickandmortyapi.client.dto.CharacterClientResponse;
 import com.br.rickandmortyapi.client.dto.EpisodeClientResponse;
+import com.br.rickandmortyapi.exceptions.RickAndMortyIntegrationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,14 +13,26 @@ public class RickAndMortyIntegrationService {
 
     private final RickAndMortyClient rickAndMortyClient;
 
-    public CharacterClientResponse findCharacterById (Long id){
+    public CharacterClientResponse findCharacterById(Long id) {
 
-        return  rickAndMortyClient.findCharacterById(id);
+        try {
+            return rickAndMortyClient.findCharacterById(id);
+        } catch (Exception exception) {
+            throw new RickAndMortyIntegrationException(
+                    "Error communicating with Rick and Morty API"
+            );
+        }
     }
 
-    public EpisodeClientResponse findEpisodeById (Long id){
+    public EpisodeClientResponse findEpisodeById(Long id) {
 
-        return rickAndMortyClient.findEpisodeById(id);
+        try {
+            return rickAndMortyClient.findEpisodeById(id);
+        } catch (Exception exception) {
+            throw new RickAndMortyIntegrationException(
+                    "Error communicating with Rick and Morty API"
+            );
+        }
     }
 
 }
