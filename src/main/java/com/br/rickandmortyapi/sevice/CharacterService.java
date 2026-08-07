@@ -3,6 +3,8 @@ package com.br.rickandmortyapi.sevice;
 
 import com.br.rickandmortyapi.client.dto.CharacterClientResponse;
 import com.br.rickandmortyapi.client.dto.EpisodeClientResponse;
+import com.br.rickandmortyapi.exceptions.CharacterAlreadyExistsException;
+import com.br.rickandmortyapi.exceptions.CharacterNotFoundException;
 import com.br.rickandmortyapi.models.dto.CharacterResponse;
 import com.br.rickandmortyapi.models.dto.CharacterUpdateRequest;
 import com.br.rickandmortyapi.models.entities.Episode;
@@ -79,7 +81,7 @@ public class CharacterService {
     private void validateCharacterAlreadyExists(Long id) {
 
         characterRepository.findByExternalId(id).ifPresent(character -> {
-            throw new RuntimeException("Character already registered");
+            throw new CharacterAlreadyExistsException("Character already registered");
         });
     }
     public CharacterResponse findByName(String name) {
@@ -126,14 +128,14 @@ public class CharacterService {
 
     private Character findCharacterById (Long id){
 
-        return characterRepository.findById(id).orElseThrow(() -> new RuntimeException("Character not found"));
+        return characterRepository.findById(id).orElseThrow(() -> new CharacterNotFoundException("Character not found"));
     }
 
     private Character findCharacterByName(String name) {
 
         return characterRepository
                 .findByNameIgnoreCaseAndActiveTrue(name)
-                .orElseThrow(() -> new RuntimeException("Character not found"));
+                .orElseThrow(() -> new CharacterNotFoundException("Character not found"));
     }
 
 }
