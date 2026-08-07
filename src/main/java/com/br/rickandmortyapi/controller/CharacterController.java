@@ -43,6 +43,13 @@ public class CharacterController {
         return ResponseEntity.noContent().build();
 
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<CharacterResponse> findBtId (@PathVariable Long id){
+
+        CharacterResponse characterResponse = characterService.findById(id);
+
+        return ResponseEntity.ok().body(characterResponse);
+    }
 
 
 }

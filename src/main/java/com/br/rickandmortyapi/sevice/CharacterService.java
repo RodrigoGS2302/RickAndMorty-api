@@ -68,6 +68,14 @@ public class CharacterService {
 
     }
 
+    public CharacterResponse findById (Long id){
+
+        Character character = findCharacterById(id);
+
+        return characterMapper.toCharacterResponse(character);
+
+    }
+
     private void validateCharacterAlreadyExists(Long id) {
 
         characterRepository.findByExternalId(id).ifPresent(character -> {
