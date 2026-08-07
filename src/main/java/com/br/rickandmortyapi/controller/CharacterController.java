@@ -2,14 +2,12 @@ package com.br.rickandmortyapi.controller;
 
 import com.br.rickandmortyapi.client.dto.CharacterClientResponse;
 import com.br.rickandmortyapi.models.dto.CharacterResponse;
+import com.br.rickandmortyapi.models.dto.CharacterUpdateRequest;
 import com.br.rickandmortyapi.sevice.CharacterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/character")
@@ -26,5 +24,16 @@ public class CharacterController {
         return ResponseEntity.status(HttpStatus.CREATED).body(characterResponse);
 
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CharacterResponse> updateCharacter(@PathVariable Long id,
+                                                             @RequestBody CharacterUpdateRequest characterUpdateRequest){
+
+        CharacterResponse characterResponse = characterService.updateCharacter(id, characterUpdateRequest);
+
+        return ResponseEntity.ok(characterResponse);
+
+    }
+
 
 }

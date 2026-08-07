@@ -2,6 +2,7 @@ package com.br.rickandmortyapi.models.mapper;
 
 import com.br.rickandmortyapi.client.dto.CharacterClientResponse;
 import com.br.rickandmortyapi.models.dto.CharacterResponse;
+import com.br.rickandmortyapi.models.dto.CharacterUpdateRequest;
 import com.br.rickandmortyapi.models.entities.Character;
 import org.springframework.stereotype.Component;
 
@@ -33,5 +34,13 @@ public class CharacterMapper {
                 character.getOrigin(),
                 character.getActive()
         );
+    }
+
+    public void updateEntityFromRequest(Character character, CharacterUpdateRequest characterUpdateRequest){
+
+        character.setName(characterUpdateRequest.name());
+        character.setStatus(characterUpdateRequest.status());
+        character.setSpecies(characterUpdateRequest.species());
+        character.setOrigin(characterUpdateRequest.origin());
     }
 }
