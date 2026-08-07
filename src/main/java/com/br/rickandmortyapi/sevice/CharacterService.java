@@ -58,6 +58,16 @@ public class CharacterService {
 
     }
 
+    public void deleteCharacter(Long id){
+
+        Character character = findCharacterById(id);
+
+        character.setActive(false);
+
+        characterRepository.save(character);
+
+    }
+
     private void validateCharacterAlreadyExists(Long id) {
 
         characterRepository.findByExternalId(id).ifPresent(character -> {
